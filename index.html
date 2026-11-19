@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Proof</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,600;1,400&family=Plus+Jakarta+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#171511;--card:#211e19;--text:#ece5d8;--muted:#8f8778;--accent:#f0a23b;--ease:cubic-bezier(.22,1,.36,1);color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 'Plus Jakarta Sans',system-ui,sans-serif}
+main{max-width:620px;margin:0 auto;padding:36px 20px 90px}
+.num{font-family:'JetBrains Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)}
+h1{font:400 56px/1 'Newsreader',Georgia,serif;margin:0}
+h2{font:italic 400 24px 'Newsreader',Georgia,serif;margin:0 0 14px}
+section{margin-top:48px;animation:rise .9s var(--ease) both;animation-delay:calc(var(--i)*100ms)}
+@keyframes rise{from{opacity:0;transform:translateY(12px)}}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;transition:transform .35s var(--ease),background .35s var(--ease),color .35s var(--ease)}
+button:active{transform:scale(.97)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.top{display:flex;justify-content:space-between;align-items:flex-end;gap:16px}
+.streak{text-align:right}
+.streak b{display:block;font:500 44px/1 'JetBrains Mono',monospace;color:var(--accent)}
+.wall{display:grid;grid-template-rows:repeat(7,1fr);grid-auto-flow:column;grid-auto-columns:1fr;gap:4px}
+.wall i{aspect-ratio:1;border-radius:5px;background:var(--accent);opacity:calc(.07 + var(--level)*.93)}
+.pills{display:flex;gap:8px;flex-wrap:wrap}
+.pills button{padding:9px 16px;border-radius:99px;background:var(--card);color:var(--muted)}
+.pills button.on{background:var(--text);color:var(--bg)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}
+.stat{background:var(--card);border-radius:20px 20px 20px 6px;padding:16px}
+.stat b{display:block;font:500 28px/1.2 'JetBrains Mono',monospace}
+.stat span{font-size:13px;color:var(--muted)}
+.habit{display:flex;align-items:center;gap:14px;width:100%;padding:16px;border-radius:18px;background:var(--card);margin-bottom:8px;text-align:left}
+.box{flex:none;width:26px;height:26px;border-radius:50%;border:1.5px solid var(--muted);display:grid;place-items:center;transition:background .4s var(--ease),border-color .4s var(--ease),transform .5s var(--ease)}
+.habit.done .box{background:var(--accent);border-color:var(--accent);transform:scale(1.08)}
+.habit.done .box::after{content:"";width:6px;height:11px;border:solid var(--bg);border-width:0 2px 2px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.habit.done .name{color:var(--muted)}
+input,textarea{width:100%;background:var(--card);color:var(--text);border:0;border-radius:14px;padding:13px 15px;font:inherit}
+textarea{min-height:100px;resize:vertical}
+.row{display:flex;gap:10px;align-items:center;margin-bottom:10px}
+.row>*{flex:1}
+.row button{flex:none;padding:12px 18px;border-radius:14px;background:var(--accent);color:var(--bg);font-weight:600}
+.small{font-size:13px;color:var(--muted);margin:6px 0 0}
+.chart{background:var(--card);border-radius:20px;padding:18px;margin-bottom:12px}
+.chart svg{width:100%;height:140px;display:block;overflow:visible}
+.chart path{fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.chart line{stroke:var(--muted);stroke-opacity:.25;vector-effect:non-scaling-stroke}
+.legend{display:flex;gap:16px;font-size:13px;color:var(--muted);margin-top:10px}
+.bar{display:grid;grid-template-columns:1fr 70px;gap:4px 12px;margin-bottom:14px}
+.track{grid-column:1/3;height:8px;border-radius:99px;background:var(--bg);overflow:hidden}
+.track i{display:block;height:100%;background:var(--accent);border-radius:99px;animation:grow 1s var(--ease)}
+@keyframes grow{from{width:0}}
+.bar .num{text-align:right;color:var(--muted)}
+.manage{display:flex;justify-content:space-between;align-items:center;padding:10px 4px;border-bottom:1px solid rgba(236,229,216,.08)}
+.manage button{color:var(--muted)}
+@media (min-width:900px){
+main{max-width:1240px;padding:56px 56px 110px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:64px;align-items:start}
+h1{font-size:76px}
+main>section:nth-child(1),main>section:nth-child(2){grid-column:1/3}
+main>section:nth-child(3){grid-column:1;grid-row:3}
+main>section:nth-child(4){grid-column:1;grid-row:4}
+main>section:nth-child(5){grid-column:2;grid-row:3/span 3}
+main>section:nth-child(6){grid-column:1;grid-row:5}
+.chart svg{height:190px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<main>
+<section style="--i:0">
+  <div class="top">
+    <div>
+      <h1>Proof</h1>
+      <p class="muted" id="dateLine" style="margin:8px 0 0"></p>
+    </div>
+    <div class="streak"><b id="streakNumber">0</b><span class="muted">day streak</span></div>
+  </div>
+</section>
+
+<section style="--i:1">
+  <div class="wall" id="wall"></div>
+  <p class="small" id="wallNote"></p>
+</section>
+
+<section style="--i:2">
+  <div class="pills" id="pills">
+    <button data-range="today">Today</button>
+    <button data-range="7" class="on">7 days</button>
+    <button data-range="30">30 days</button>
+    <button data-range="all">All time</button>
+  </div>
+  <div class="stats" id="stats"></div>
+  <p class="small">A day counts when you finish half your habits.</p>
+</section>
+
+<section style="--i:3">
+  <h2 id="dayTitle">Today</h2>
+  <div class="row"><input type="date" id="pickedDate" aria-label="Pick a day"></div>
+  <div id="habits"></div>
+  <div class="row">
+    <input type="number" id="sleep" placeholder="Hours slept" min="0" max="14" step="0.5">
+    <input type="number" id="mood" placeholder="Mood (1-10)" min="1" max="10">
+  </div>
+  <textarea id="note" placeholder="What did I do today?"></textarea>
+</section>
+
+<section style="--i:4">
+  <h2>The numbers</h2>
+  <div class="chart" id="doneChart"></div>
+  <div class="chart" id="bodyChart"></div>
+  <div class="chart" id="bars"></div>
+</section>
+
+<section style="--i:5">
+  <h2>My habits</h2>
+  <div id="manageList"></div>
+  <div class="row" style="margin-top:14px">
+    <input type="text" id="newHabit" placeholder="Add a habit" maxlength="40">
+    <button id="addHabit">Add</button>
+  </div>
+</section>
+</main>
+
+<script>
+const key = 'proof-v1';
+const emptyDay = { done: [], sleep: '', mood: '', note: '' };
+let state = null;
+try { state = JSON.parse(localStorage.getItem(key)); } catch (e) {}
+if (!state) {
+  state = {
+    habits: [
+      { id: 1, name: 'Wake up early' },
+      { id: 2, name: 'Workout' },
+      { id: 3, name: 'Read 20 pages' },
+      { id: 4, name: 'Work on my goal' }
+    ],
+    days: {}
+  };
+}
+let range = '7';
+let picked = dateKey(new Date());
+const $ = id => document.getElementById(id);
+
+function dateKey(d) { return d.toLocaleDateString('en-CA'); }
+function save() { try { localStorage.setItem(key, JSON.stringify(state)); } catch (e) {} }
+function getDay(k) { return state.days[k] || (state.days[k] = { done: [], sleep: '', mood: '', note: '' }); }
+function esc(text) { return text.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
+
+function percent(k) {
+  const day = state.days[k];
+  if (!day || !state.habits.length) return 0;
+  const count = state.habits.filter(h => day.done.includes(h.id)).length;
+  return count / state.habits.length;
+}
+
+function daysBack(n) {
+  const list = [];
+  for (let i = n - 1; i >= 0; i--) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    list.push(dateKey(d));
+  }
+  return list;
+}
+
+function daysSinceFirst() {
+  const first = Object.keys(state.days).sort()[0];
+  if (!first) return 0;
+  return Math.round((new Date(dateKey(new Date())) - new Date(first)) / 86400000) + 1;
+}
+
+function rangeKeys() {
+  if (range === 'today') return [dateKey(new Date())];
+  if (range === 'all') return daysBack(Math.max(daysSinceFirst(), 7));
+  return daysBack(Number(range));
+}
+
+function streaks() {
+  const list = daysBack(daysSinceFirst());
+  if (!list.length) return { now: 0, best: 0 };
+  let best = 0;
+  let run = 0;
+  list.forEach(k => {
+    if (percent(k) >= 0.5) { run++; best = Math.max(best, run); } else run = 0;
+  });
+  let now = 0;
+  let i = list.length - 1;
+  if (percent(list[i]) < 0.5) i--;
+  while (i >= 0 && percent(list[i]) >= 0.5) { now++; i--; }
+  return { now, best };
+}
+
+function makePath(values, max) {
+  const last = values.length - 1;
+  let text = '';
+  let pen = false;
+  values.forEach((v, i) => {
+    if (v === null) { pen = false; return; }
+    const x = (i / last) * 300;
+    const y = 100 - (Math.min(v, max) / max) * 100;
+    text += (pen ? 'L' : 'M') + x.toFixed(1) + ' ' + y.toFixed(1) + ' ';
+    pen = true;
+  });
+  return text;
+}
+
+function readNumber(value) { return value === '' || value === undefined ? null : Number(value); }
+
+function drawCharts(keys) {
+  const grid = '<line x1="0" x2="300" y1="0" y2="0"/><line x1="0" x2="300" y1="50" y2="50"/><line x1="0" x2="300" y1="100" y2="100"/>';
+  if (keys.length < 2) {
+    $('doneChart').innerHTML = '<p class="muted" style="margin:0">Pick 7 days or more to see your graph.</p>';
+    $('bodyChart').style.display = 'none';
+  } else {
+    const done = keys.map(k => percent(k) * 100);
+    $('doneChart').innerHTML = `<div style="margin-bottom:10px">Habits done each day</div><svg viewBox="0 0 300 100" preserveAspectRatio="none">${grid}<path d="${makePath(done, 100)}" stroke="var(--accent)"/></svg>`;
+    const sleep = keys.map(k => readNumber((state.days[k] || emptyDay).sleep));
+    const mood = keys.map(k => readNumber((state.days[k] || emptyDay).mood));
+    $('bodyChart').style.display = '';
+    if (sleep.every(v => v === null) && mood.every(v => v === null)) {
+      $('bodyChart').innerHTML = '<p class="muted" style="margin:0">Log sleep and mood to see them here.</p>';
+    } else {
+      $('bodyChart').innerHTML = `<div style="margin-bottom:10px">Sleep and mood</div><svg viewBox="0 0 300 100" preserveAspectRatio="none">${grid}<path d="${makePath(sleep, 12)}" stroke="var(--text)"/><path d="${makePath(mood, 10)}" stroke="var(--muted)" stroke-dasharray="5 6"/></svg><div class="legend"><span>Solid: sleep hours</span><span>Dashed: mood</span></div>`;
+    }
+  }
+  $('bars').innerHTML = '<div style="margin-bottom:14px">Each habit</div>' + state.habits.map(h => {
+    const count = keys.filter(k => state.days[k] && state.days[k].done.includes(h.id)).length;
+    const width = Math.round(count / keys.length * 100);
+    return `<div class="bar"><span>${esc(h.name)}</span><span class="num">${count}/${keys.length}</span><div class="track"><i style="width:${width}%"></i></div></div>`;
+  }).join('');
+}
+
+function drawStats() {
+  const keys = rangeKeys();
+  const total = keys.reduce((sum, k) => sum + percent(k), 0);
+  const average = Math.round(total / keys.length * 100);
+  const s = streaks();
+  $('streakNumber').textContent = s.now;
+  $('stats').innerHTML = `<div class="stat"><b>${s.now}</b><span>streak</span></div><div class="stat"><b>${s.best}</b><span>best streak</span></div><div class="stat"><b>${average}%</b><span>done</span></div>`;
+  const wallDays = window.matchMedia('(min-width:900px)').matches ? 182 : 91;
+  $('wall').innerHTML = daysBack(wallDays).map(k => `<i style="--level:${percent(k)}" title="${k}"></i>`).join('');
+  $('wallNote').textContent = `Last ${wallDays / 7} weeks. Brighter means more done.`;
+  drawCharts(keys);
+}
+
+function drawHabits() {
+  const day = state.days[picked] || emptyDay;
+  $('habits').innerHTML = state.habits.map(h => `<button class="habit ${day.done.includes(h.id) ? 'done' : ''}" data-id="${h.id}"><i class="box"></i><span class="name">${esc(h.name)}</span></button>`).join('');
+  $('sleep').value = day.sleep;
+  $('mood').value = day.mood;
+  $('note').value = day.note;
+  $('pickedDate').value = picked;
+  $('dayTitle').textContent = picked === dateKey(new Date()) ? 'Today' : picked;
+}
+
+function drawManage() {
+  $('manageList').innerHTML = state.habits.map(h => `<div class="manage"><span>${esc(h.name)}</span><button data-remove="${h.id}">Remove</button></div>`).join('');
+}
+
+$('habits').onclick = e => {
+  const button = e.target.closest('.habit');
+  if (!button) return;
+  const id = Number(button.dataset.id);
+  const day = getDay(picked);
+  if (day.done.includes(id)) day.done = day.done.filter(x => x !== id);
+  else day.done.push(id);
+  button.classList.toggle('done');
+  save();
+  drawStats();
+};
+
+$('pills').onclick = e => {
+  const button = e.target.closest('button');
+  if (!button) return;
+  range = button.dataset.range;
+  [...$('pills').children].forEach(b => b.classList.toggle('on', b === button));
+  drawStats();
+};
+
+$('pickedDate').onchange = () => {
+  picked = $('pickedDate').value || dateKey(new Date());
+  drawHabits();
+};
+
+['sleep', 'mood'].forEach(id => {
+  $(id).oninput = () => { getDay(picked)[id] = $(id).value; save(); drawStats(); };
+});
+$('note').oninput = () => { getDay(picked).note = $('note').value; save(); };
+
+function addHabit() {
+  const name = $('newHabit').value.trim();
+  if (!name) return;
+  state.habits.push({ id: Date.now(), name });
+  $('newHabit').value = '';
+  save(); drawHabits(); drawManage(); drawStats();
+}
+$('addHabit').onclick = addHabit;
+$('newHabit').onkeydown = e => { if (e.key === 'Enter') addHabit(); };
+
+$('manageList').onclick = e => {
+  const button = e.target.closest('[data-remove]');
+  if (!button) return;
+  state.habits = state.habits.filter(h => h.id !== Number(button.dataset.remove));
+  save(); drawHabits(); drawManage(); drawStats();
+};
+
+$('dateLine').textContent = new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' });
+$('pickedDate').max = picked;
+window.matchMedia('(min-width:900px)').onchange = drawStats;
+drawHabits();
+drawManage();
+drawStats();
+</script>
+</body>
+</html>
