@@ -25,7 +25,7 @@ button:active{transform:scale(.97)}
 .streak{text-align:right}
 .streak b{display:block;font:500 44px/1 'JetBrains Mono',monospace;color:var(--accent)}
 .wall{display:grid;grid-template-rows:repeat(7,1fr);grid-auto-flow:column;grid-auto-columns:1fr;gap:4px}
-.wall i{aspect-ratio:1;border-radius:5px;background:var(--accent);opacity:calc(.07 + var(--level)*.93)}
+.wall button{aspect-ratio:1;padding:0;border-radius:5px;background:var(--accent);opacity:calc(.07 + var(--level)*.93)}
 .pills{display:flex;gap:8px;flex-wrap:wrap}
 .pills button{padding:9px 16px;border-radius:99px;background:var(--card);color:var(--muted)}
 .pills button.on{background:var(--text);color:var(--bg)}
@@ -49,13 +49,89 @@ textarea{min-height:100px;resize:vertical}
 .chart path{fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
 .chart line{stroke:var(--muted);stroke-opacity:.25;vector-effect:non-scaling-stroke}
 .legend{display:flex;gap:16px;font-size:13px;color:var(--muted);margin-top:10px}
-.bar{display:grid;grid-template-columns:1fr 70px;gap:4px 12px;margin-bottom:14px}
+.bar{display:grid;grid-template-columns:1fr 140px;gap:4px 12px;margin-bottom:14px}
 .track{grid-column:1/3;height:8px;border-radius:99px;background:var(--bg);overflow:hidden}
 .track i{display:block;height:100%;background:var(--accent);border-radius:99px;animation:grow 1s var(--ease)}
 @keyframes grow{from{width:0}}
 .bar .num{text-align:right;color:var(--muted)}
 .manage{display:flex;justify-content:space-between;align-items:center;padding:10px 4px;border-bottom:1px solid rgba(236,229,216,.08)}
 .manage button{color:var(--muted)}
+.tip{position:fixed;z-index:20;max-width:250px;padding:10px 14px;border-radius:14px 14px 14px 4px;background:var(--text);color:var(--bg);font-size:13px;pointer-events:none;opacity:0;transform:translateY(5px);transition:opacity .25s var(--ease),transform .25s var(--ease)}
+.tip.show{opacity:1;transform:none}
+.tip b{display:block;font-weight:600;margin-bottom:2px}
+.shade{position:fixed;inset:0;z-index:30;display:grid;place-items:center;padding:20px;background:rgba(10,9,7,.62);opacity:0;visibility:hidden;transition:opacity .5s var(--ease),visibility 0s .5s}
+.shade.open{opacity:1;visibility:visible;transition:opacity .5s var(--ease)}
+.sheet{width:min(520px,100%);max-height:84vh;overflow:auto;background:var(--card);border-radius:22px 22px 22px 6px;padding:28px;clip-path:inset(0 0 100% 0);transition:clip-path .75s var(--ease)}
+.shade.open .sheet{clip-path:inset(0 0 0 0)}
+.sheet>*{opacity:0;transform:translateY(10px);transition:opacity .5s var(--ease),transform .5s var(--ease)}
+.shade.open .sheet>*{opacity:1;transform:none;transition-delay:.3s}
+.sheet h2{margin-bottom:6px}
+.list{list-style:none;padding:0;margin:16px 0}
+.list li{position:relative;padding:6px 0 6px 24px}
+.list li::before{content:"";position:absolute;left:0;top:13px;width:10px;height:10px;border-radius:50%;border:1.5px solid var(--muted)}
+.list li.yes::before{background:var(--accent);border-color:var(--accent)}
+.list li.no{color:var(--muted)}
+.notebox{white-space:pre-wrap;background:var(--bg);border-radius:14px;padding:14px 16px;margin:16px 0 22px}
+.row button.ghost{background:var(--bg);color:var(--text);font-weight:500}
+.wall span{aspect-ratio:1}
+#countdown{margin-bottom:28px}
+.link{color:var(--muted);padding:6px 0}
+.link:hover{color:var(--text)}
+.cd{background:var(--card);border-radius:22px 22px 22px 6px;padding:22px}
+.cd .pills button{background:var(--bg)}
+.cd .pills button.on{background:var(--text);color:var(--bg)}
+.cd input{background:var(--bg)}
+.cd .row button.ghost{background:var(--bg)}
+.big{font:500 48px/1 'JetBrains Mono',monospace}
+.field span{display:block;font-size:13px;color:var(--muted);margin-bottom:4px}
+main{position:relative}
+.strip{position:absolute;top:14px;left:20px;right:20px;display:flex;justify-content:space-between;gap:24px;line-height:1.4}
+#whyBox{flex:1;min-width:0}
+.why{display:block;max-width:100%;padding:0;text-align:left;color:var(--text);opacity:.85;font:italic 400 15px/1.4 'Newsreader',Georgia,serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.why.empty{color:var(--muted)}
+.why:hover{opacity:1}
+.strip input{width:100%;padding:0 0 2px;border:0;border-bottom:1px solid var(--muted);border-radius:0;background:none;font:italic 400 15px/1.4 'Newsreader',Georgia,serif;color:var(--text)}
+.quote{display:none;flex:none;max-width:48%;font:italic 400 15px/1.4 'Newsreader',Georgia,serif;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media (min-width:900px){.strip{top:20px;left:56px;right:56px}.quote{display:block}}
+.pills .shareBtn{margin-left:auto;background:var(--accent);color:var(--bg);font-weight:600}
+.reel{position:fixed;inset:0;z-index:50;display:grid;place-items:center;background:#0d0c0a;opacity:0;visibility:hidden;transition:opacity .7s var(--ease),visibility 0s .7s}
+.reel.open{opacity:1;visibility:visible;transition:opacity .7s var(--ease)}
+.stage{container-type:size;width:min(100vw,calc(100vh*.5625));width:min(100vw,calc(100dvh*.5625));height:100vh;height:100dvh;background:var(--bg);overflow:hidden}
+.rin{height:100%;padding:5cqh 8cqw;display:flex;flex-direction:column;justify-content:space-between;gap:1.4cqh}
+.rtop{display:flex;justify-content:space-between;align-items:baseline}
+.rtitle{font:400 13cqw/1 'Newsreader',Georgia,serif}
+.rdate{font-size:3.2cqw;color:var(--muted)}
+.hnum{display:flex;align-items:baseline;gap:3cqw}
+.hnum b{font:500 22cqw/1 'JetBrains Mono',monospace}
+.hnum span{font-size:4.6cqw;color:var(--muted)}
+.rhero .track{height:1.1cqw;margin:2cqh 0 1.2cqh}
+.rhero p{margin:0;font:italic 400 4cqw/1.3 'Newsreader',Georgia,serif;color:var(--muted)}
+.rstats{display:grid;grid-template-columns:repeat(3,1fr);gap:3cqw}
+.rstats b{display:block;font:500 7cqw/1.1 'JetBrains Mono',monospace}
+.rstats b.hot{color:var(--accent)}
+.rstats span{font-size:3cqw;color:var(--muted)}
+.rw{display:grid;grid-template-rows:repeat(7,1fr);grid-auto-flow:column;grid-auto-columns:1fr;gap:.7cqw}
+.rw i{aspect-ratio:1;border-radius:.7cqw;background:var(--accent);opacity:calc(.07 + var(--level)*.93)}
+.rw span{aspect-ratio:1}
+.hrow{margin-bottom:1.6cqh}
+.hrow>div:first-child{display:flex;justify-content:space-between;gap:3cqw;font-size:3.6cqw;margin-bottom:.8cqh}
+.hrow .num{color:var(--muted);font-size:3.2cqw}
+.reel .track{background:var(--card)}
+.rhabits .track{height:1cqw}
+.rwhy{margin:0;font:italic 400 5cqw/1.25 'Newsreader',Georgia,serif}
+.rquote{margin:0;align-self:flex-end;max-width:75%;text-align:right;font:italic 400 3.3cqw/1.35 'Newsreader',Georgia,serif;color:var(--muted)}
+.reel .track i{animation:none}
+.reel.play .track i{animation:grow 1.4s var(--ease) both;animation-delay:calc(var(--t) + .25s)}
+.reel.play .r{animation:reveal 1.1s var(--ease) both;animation-delay:var(--t)}
+.reel.play .rtitle{animation:inkin 1.6s var(--ease) .3s both}
+.reel.play .rw i{animation:pop .7s var(--ease) both;animation-delay:calc(var(--t) + var(--d))}
+@keyframes reveal{from{opacity:0;transform:translateY(3cqh);filter:blur(10px)}}
+@keyframes inkin{from{opacity:0;letter-spacing:.18em;filter:blur(14px)}}
+@keyframes pop{from{opacity:0;transform:scale(.4)}}
+.reelbar{position:absolute;top:calc(env(safe-area-inset-top,0px) + 14px);right:14px;display:flex;gap:8px;opacity:.3;transition:opacity .4s var(--ease)}
+.reelbar:hover,.reelbar:focus-within,.reel.ui .reelbar{opacity:1}
+.reelbar button{padding:8px 14px;border-radius:99px;background:var(--card)}
+@media (max-width:700px){.reelbar{opacity:0}}
 @media (min-width:900px){
 main{max-width:1240px;padding:56px 56px 110px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:64px;align-items:start}
 h1{font-size:76px}
@@ -64,6 +140,7 @@ main>section:nth-child(3){grid-column:1;grid-row:3}
 main>section:nth-child(4){grid-column:1;grid-row:4}
 main>section:nth-child(5){grid-column:2;grid-row:3/span 3}
 main>section:nth-child(6){grid-column:1;grid-row:5}
+main>section:nth-child(7){grid-column:1/3;grid-row:6}
 .chart svg{height:190px}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
@@ -82,6 +159,7 @@ main>section:nth-child(6){grid-column:1;grid-row:5}
 </section>
 
 <section style="--i:1">
+  <div id="countdown"></div>
   <div class="wall" id="wall"></div>
   <p class="small" id="wallNote"></p>
 </section>
@@ -92,9 +170,10 @@ main>section:nth-child(6){grid-column:1;grid-row:5}
     <button data-range="7" class="on">7 days</button>
     <button data-range="30">30 days</button>
     <button data-range="all">All time</button>
+    <button class="shareBtn" id="shareBtn">Share view</button>
   </div>
   <div class="stats" id="stats"></div>
-  <p class="small">A day counts when you finish half your habits.</p>
+  <p class="small">Streak: days in a row where you finished half or more of your habits. Habits done: your daily average over the days shown above.</p>
 </section>
 
 <section style="--i:3">
@@ -106,6 +185,10 @@ main>section:nth-child(6){grid-column:1;grid-row:5}
     <input type="number" id="mood" placeholder="Mood (1-10)" min="1" max="10">
   </div>
   <textarea id="note" placeholder="What did I do today?"></textarea>
+  <div class="row" style="margin-top:12px">
+    <span class="small" id="saveStatus" style="margin:0">Saves as you type.</span>
+    <button id="saveBtn">Save entry</button>
+  </div>
 </section>
 
 <section style="--i:4">
@@ -123,7 +206,26 @@ main>section:nth-child(6){grid-column:1;grid-row:5}
     <button id="addHabit">Add</button>
   </div>
 </section>
+<section style="--i:6">
+  <h2>Your data</h2>
+  <p class="muted" style="margin:0 0 14px">Everything is saved in this browser only. A backup file lets you keep a copy or move to another device.</p>
+  <div class="row" style="flex-wrap:wrap">
+    <button id="backupBtn">Download backup</button>
+    <button class="ghost" id="restoreBtn">Restore backup</button>
+    <button class="ghost" id="resetBtn">Erase all entries</button>
+  </div>
+  <input type="file" id="restoreFile" accept=".json" hidden>
+  <p class="small" id="dataStatus"></p>
+</section>
+<div class="strip"><div id="whyBox"></div><span class="quote" id="quote"></span></div>
 </main>
+
+<div class="shade" id="shade"><div class="sheet" id="sheetBody" role="dialog" aria-modal="true"></div></div>
+<div class="reel" id="reel" role="dialog" aria-modal="true" aria-label="Share view">
+  <div class="stage"><div class="rin" id="rin"></div></div>
+  <div class="reelbar"><button data-reel="replay">Replay</button><button data-reel="close">Close</button></div>
+</div>
+<div class="tip" id="tip"></div>
 
 <script>
 const key = 'proof-v1';
@@ -142,6 +244,7 @@ if (!state) {
   };
 }
 let range = '7';
+upgrade();
 let picked = dateKey(new Date());
 const $ = id => document.getElementById(id);
 
@@ -230,7 +333,7 @@ function drawCharts(keys) {
   $('bars').innerHTML = '<div style="margin-bottom:14px">Each habit</div>' + state.habits.map(h => {
     const count = keys.filter(k => state.days[k] && state.days[k].done.includes(h.id)).length;
     const width = Math.round(count / keys.length * 100);
-    return `<div class="bar"><span>${esc(h.name)}</span><span class="num">${count}/${keys.length}</span><div class="track"><i style="width:${width}%"></i></div></div>`;
+    return `<div class="bar"><span>${esc(h.name)}</span><span class="num">${count} of ${keys.length} days</span><div class="track"><i style="width:${width}%"></i></div></div>`;
   }).join('');
 }
 
@@ -240,10 +343,12 @@ function drawStats() {
   const average = Math.round(total / keys.length * 100);
   const s = streaks();
   $('streakNumber').textContent = s.now;
-  $('stats').innerHTML = `<div class="stat"><b>${s.now}</b><span>streak</span></div><div class="stat"><b>${s.best}</b><span>best streak</span></div><div class="stat"><b>${average}%</b><span>done</span></div>`;
+  $('stats').innerHTML = `<div class="stat"><b>${s.now}</b><span>streak</span></div><div class="stat"><b>${s.best}</b><span>best streak</span></div><div class="stat"><b>${average}%</b><span>habits done</span></div>`;
   const wallDays = window.matchMedia('(min-width:900px)').matches ? 182 : 91;
-  $('wall').innerHTML = daysBack(wallDays).map(k => `<i style="--level:${percent(k)}" title="${k}"></i>`).join('');
-  $('wallNote').textContent = `Last ${wallDays / 7} weeks. Brighter means more done.`;
+  const futureCells = 6 - (new Date().getDay() + 6) % 7;
+  const cells = daysBack(wallDays - futureCells).map(k => `<button data-key="${k}" style="--level:${percent(k)}" aria-label="${longDate(k)}"></button>`).join('');
+  $('wall').innerHTML = cells + '<span></span>'.repeat(futureCells);
+  $('wallNote').textContent = `Last ${wallDays / 7} weeks, one column per week with Monday at the top. Brighter means more done.`;
   drawCharts(keys);
 }
 
@@ -254,6 +359,7 @@ function drawHabits() {
   $('mood').value = day.mood;
   $('note').value = day.note;
   $('pickedDate').value = picked;
+  $('saveStatus').textContent = 'Saves as you type.';
   $('dayTitle').textContent = picked === dateKey(new Date()) ? 'Today' : picked;
 }
 
@@ -276,6 +382,7 @@ $('habits').onclick = e => {
 $('pills').onclick = e => {
   const button = e.target.closest('button');
   if (!button) return;
+  if (!button.dataset.range) return;
   range = button.dataset.range;
   [...$('pills').children].forEach(b => b.classList.toggle('on', b === button));
   drawStats();
@@ -287,9 +394,10 @@ $('pickedDate').onchange = () => {
 };
 
 ['sleep', 'mood'].forEach(id => {
-  $(id).oninput = () => { getDay(picked)[id] = $(id).value; save(); drawStats(); };
+  $(id).oninput = () => { getDay(picked)[id] = $(id).value; save(); showSaved(); drawStats(); };
 });
-$('note').oninput = () => { getDay(picked).note = $('note').value; save(); };
+$('note').oninput = () => { getDay(picked).note = $('note').value; save(); showSaved(); };
+$('saveBtn').onclick = () => { save(); showSaved(); drawStats(); };
 
 function addHabit() {
   const name = $('newHabit').value.trim();
@@ -304,13 +412,349 @@ $('newHabit').onkeydown = e => { if (e.key === 'Enter') addHabit(); };
 $('manageList').onclick = e => {
   const button = e.target.closest('[data-remove]');
   if (!button) return;
+  if (!tapTwice(button, 'Tap again to remove')) return;
   state.habits = state.habits.filter(h => h.id !== Number(button.dataset.remove));
   save(); drawHabits(); drawManage(); drawStats();
 };
 
+function upgrade() {
+  if (state.countdown === undefined) state.countdown = null;
+  if (state.why === undefined) state.why = '';
+  state.version = 3;
+}
+
+function drawAll() {
+  drawHabits();
+  drawManage();
+  drawStats();
+  drawCountdown();
+}
+
+function tapTwice(button, askText) {
+  if (button.dataset.armed) return true;
+  const original = button.textContent;
+  button.dataset.armed = '1';
+  button.textContent = askText;
+  setTimeout(() => { delete button.dataset.armed; button.textContent = original; }, 3000);
+  return false;
+}
+
+function daysBetween(from, to) {
+  return Math.round((new Date(to + 'T00:00:00') - new Date(from + 'T00:00:00')) / 86400000);
+}
+
+function endFor(code) {
+  const date = new Date();
+  if (code === '30d') {
+    date.setDate(date.getDate() + 30);
+    return dateKey(date);
+  }
+  const day = date.getDate();
+  date.setMonth(date.getMonth() + Number(code.slice(0, -1)));
+  if (date.getDate() !== day) date.setDate(0);
+  return dateKey(date);
+}
+
+let editingCountdown = false;
+
+function markPreset(code) {
+  [...$('presets').children].forEach(b => b.classList.toggle('on', b.dataset.preset === code));
+}
+
+function drawCountdown() {
+  const box = $('countdown');
+  const c = state.countdown;
+  if (editingCountdown) {
+    box.innerHTML = `<div class="cd"><div class="pills" id="presets"><button data-preset="30d">30 days</button><button data-preset="3m">3 months</button><button data-preset="6m">6 months</button><button data-preset="12m">1 year</button></div><div class="row" style="margin-top:14px"><input type="text" id="cdName" placeholder="Name it (optional)" maxlength="40"></div><div class="row"><label class="field"><span>Start</span><input type="date" id="cdStart"></label><label class="field"><span>End</span><input type="date" id="cdEnd"></label></div><p class="small" id="cdError"></p><div class="row"><button class="ghost" data-cd="cancel">Cancel</button><button data-cd="save">Start countdown</button></div></div>`;
+    $('cdName').value = c ? c.name : '';
+    $('cdStart').value = c ? c.start : dateKey(new Date());
+    $('cdEnd').value = c ? c.end : endFor('6m');
+    $('cdStart').max = dateKey(new Date());
+    $('cdStart').oninput = () => markPreset('');
+    $('cdEnd').oninput = () => markPreset('');
+    markPreset(c ? '' : '6m');
+    return;
+  }
+  if (!c) {
+    box.innerHTML = '<button class="link" data-cd="edit">+ Add a countdown</button>';
+    return;
+  }
+  const today = dateKey(new Date());
+  const total = daysBetween(c.start, c.end);
+  const left = daysBetween(today, c.end);
+  const dayNumber = Math.min(Math.max(daysBetween(c.start, today) + 1, 1), total);
+  const share = Math.round(dayNumber / total * 100);
+  let headline;
+  if (left > 0) headline = `<b class="big">${left}</b> <span class="muted">days left</span>`;
+  else if (left === 0) headline = '<b class="big">Last day</b>';
+  else headline = '<b class="big">Complete</b>';
+  const detail = left >= 0 ? `Day ${dayNumber} of ${total}, ends ${longDate(c.end)}` : `Ended ${longDate(c.end)}`;
+  box.innerHTML = `<div class="cd"><div style="font:italic 400 20px 'Newsreader',Georgia,serif;margin-bottom:10px">${c.name ? esc(c.name) : 'Countdown'}</div>${headline}<div class="track" style="margin:16px 0 10px"><i style="width:${share}%"></i></div><p class="small" style="margin:0 0 14px">${detail}</p><div class="row" style="margin:0"><button class="ghost" data-cd="edit">Edit</button><button class="ghost" data-cd="remove">Remove</button></div></div>`;
+}
+
+$('countdown').onclick = e => {
+  const preset = e.target.closest('[data-preset]');
+  if (preset) {
+    $('cdStart').value = dateKey(new Date());
+    $('cdEnd').value = endFor(preset.dataset.preset);
+    markPreset(preset.dataset.preset);
+    return;
+  }
+  const action = e.target.closest('[data-cd]');
+  if (!action) return;
+  const what = action.dataset.cd;
+  if (what === 'edit') {
+    editingCountdown = true;
+    drawCountdown();
+  } else if (what === 'cancel') {
+    editingCountdown = false;
+    drawCountdown();
+  } else if (what === 'remove') {
+    if (!tapTwice(action, 'Tap again to remove')) return;
+    state.countdown = null;
+    save();
+    drawCountdown();
+  } else if (what === 'save') {
+    const start = $('cdStart').value;
+    const end = $('cdEnd').value;
+    if (!start || !end) { $('cdError').textContent = 'Pick a start and an end date.'; return; }
+    if (end <= start) { $('cdError').textContent = 'The end date has to be after the start date.'; return; }
+    state.countdown = { name: $('cdName').value.trim(), start, end };
+    save();
+    editingCountdown = false;
+    drawCountdown();
+  }
+};
+
+$('backupBtn').onclick = () => {
+  const file = new Blob([JSON.stringify(state)], { type: 'application/json' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(file);
+  link.download = 'proof-backup-' + dateKey(new Date()) + '.json';
+  link.click();
+  $('dataStatus').textContent = 'Backup downloaded.';
+};
+
+$('restoreBtn').onclick = () => $('restoreFile').click();
+
+$('restoreFile').onchange = () => {
+  const file = $('restoreFile').files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const loaded = JSON.parse(reader.result);
+      if (!loaded.habits || !loaded.days) throw new Error('not a backup');
+      state = loaded;
+      upgrade();
+      save();
+      picked = dateKey(new Date());
+      drawAll();
+      $('dataStatus').textContent = 'Backup restored.';
+    } catch (e) {
+      $('dataStatus').textContent = 'That file is not a Proof backup.';
+    }
+  };
+  reader.readAsText(file);
+  $('restoreFile').value = '';
+};
+
+$('resetBtn').onclick = e => {
+  if (!tapTwice(e.target, 'Tap again to erase all entries')) return;
+  state.days = {};
+  state.countdown = null;
+  save();
+  drawAll();
+  $('dataStatus').textContent = 'All entries erased. Your habit list is kept.';
+};
+
+const quotes = [
+  "You're one win away.",
+  "I can and I will.",
+  "Small steps still move you forward.",
+  "Keep the promise you made to yourself.",
+  "Show up again. That's how change happens.",
+  "Today counts, even when it feels ordinary.",
+  "Aut viam inveniam aut faciam (I will either find a way or make one.)",
+  "Audentes fortuna iuvat (Fortune favors the bold.)"
+];
+
+function todaysQuote() {
+  return quotes[daysBetween('2026-01-01', dateKey(new Date())) % quotes.length];
+}
+
+let editingWhy = false;
+
+function drawWhy() {
+  const box = $('whyBox');
+  if (editingWhy) {
+    box.innerHTML = '<input id="whyInput" maxlength="120" placeholder="Why am I doing this?">';
+    $('whyInput').value = state.why;
+    $('whyInput').focus();
+    $('whyInput').onkeydown = e => {
+      if (e.key === 'Enter') saveWhy(true);
+      if (e.key === 'Escape') saveWhy(false);
+    };
+    $('whyInput').onblur = () => saveWhy(true);
+    return;
+  }
+  box.innerHTML = `<button class="why ${state.why ? '' : 'empty'}">${state.why ? esc(state.why) : 'Why am I doing this? Tap to write it.'}</button>`;
+}
+
+function saveWhy(keep) {
+  if (!editingWhy) return;
+  if (keep) {
+    state.why = $('whyInput').value.trim();
+    save();
+  }
+  editingWhy = false;
+  drawWhy();
+}
+
+$('whyBox').onclick = e => {
+  if (!e.target.closest('.why')) return;
+  editingWhy = true;
+  drawWhy();
+};
+
+let reelTimers = [];
+
+function countUp(element, target, ms) {
+  const start = performance.now();
+  function step(now) {
+    const t = Math.min(Math.max((now - start) / ms, 0), 1);
+    element.textContent = Math.round(target * (1 - Math.pow(1 - t, 3)));
+    if (t < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+function reelWall() {
+  const future = 6 - (new Date().getDay() + 6) % 7;
+  const cells = daysBack(126 - future).map((k, i) => `<i style="--level:${percent(k)};--d:${Math.floor(i / 7) * 60 + (i % 7) * 18}ms"></i>`).join('');
+  return cells + '<span></span>'.repeat(future);
+}
+
+function openShare() {
+  hideTip();
+  const today = dateKey(new Date());
+  const month = daysBack(30);
+  const s = streaks();
+  const average = Math.round(month.reduce((sum, k) => sum + percent(k), 0) / 30 * 100);
+  const c = state.countdown;
+  let heroTarget = s.now;
+  let heroLabel = 'day streak';
+  let heroNote = 'One day at a time';
+  let bar = '';
+  if (c) {
+    const total = daysBetween(c.start, c.end);
+    const dayNumber = Math.min(Math.max(daysBetween(c.start, today) + 1, 1), total);
+    heroTarget = Math.max(daysBetween(today, c.end), 0);
+    heroLabel = 'days left';
+    heroNote = (c.name ? esc(c.name) + ', ' : '') + `day ${dayNumber} of ${total}`;
+    bar = `<div class="track"><i style="width:${Math.round(dayNumber / total * 100)}%"></i></div>`;
+  }
+  const rows = state.habits.slice(0, 5).map((h, i) => {
+    const count = month.filter(k => state.days[k] && state.days[k].done.includes(h.id)).length;
+    return `<div class="hrow r" style="--t:${6.6 + i * 0.35}s"><div><span>${esc(h.name)}</span><span class="num">${count}/30</span></div><div class="track"><i style="width:${Math.round(count / 30 * 100)}%"></i></div></div>`;
+  }).join('');
+  const why = state.why ? `<p class="rwhy r" style="--t:9s">${esc(state.why)}</p>` : '';
+  $('rin').innerHTML = `<div class="rtop"><span class="rtitle">Proof</span><span class="rdate r" style="--t:1s">${longDate(today)}</span></div>`
+    + `<div class="rhero r" style="--t:1.7s"><div class="hnum"><b id="heroNumber">0</b><span>${heroLabel}</span></div>${bar}<p>${heroNote}</p></div>`
+    + `<div class="rstats r" style="--t:3.2s"><div><b class="hot">${s.now}</b><span>day streak</span></div><div><b>${s.best}</b><span>best streak</span></div><div><b>${average}%</b><span>30-day average</span></div></div>`
+    + `<div class="rw" style="--t:4s">${reelWall()}</div>`
+    + `<div class="rhabits">${rows}</div>${why}`
+    + `<p class="rquote r" style="--t:10.2s">${esc(todaysQuote())}</p>`;
+  const reel = $('reel');
+  stopReel();
+  reel.classList.remove('play', 'ui');
+  reel.classList.add('open');
+  void reel.offsetWidth;
+  reel.classList.add('play');
+  reelTimers.push(setTimeout(() => countUp($('heroNumber'), heroTarget, 1800), 1800));
+}
+
+function stopReel() {
+  reelTimers.forEach(clearTimeout);
+  reelTimers = [];
+}
+
+function closeShare() {
+  stopReel();
+  $('reel').classList.remove('open', 'play', 'ui');
+}
+
+$('shareBtn').onclick = openShare;
+
+$('reel').onclick = e => {
+  const button = e.target.closest('button');
+  if (!button) {
+    $('reel').classList.toggle('ui');
+  } else if (button.dataset.reel === 'close') {
+    closeShare();
+  } else if (button.dataset.reel === 'replay') {
+    openShare();
+  }
+};
+
+const tip = $('tip');
+function hideTip() { tip.classList.remove('show'); }
+function longDate(k) { return new Date(k + 'T00:00:00').toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }); }
+function showSaved() { $('saveStatus').textContent = 'Saved at ' + new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }); }
+
+function openDay(k) {
+  const day = state.days[k] || emptyDay;
+  const count = state.habits.filter(h => day.done.includes(h.id)).length;
+  const list = state.habits.map(h => `<li class="${day.done.includes(h.id) ? 'yes' : 'no'}">${esc(h.name)}</li>`).join('');
+  const bits = [];
+  if (day.sleep !== '') bits.push(`<span class="num">${day.sleep}</span> hours of sleep`);
+  if (day.mood !== '') bits.push(`mood <span class="num">${day.mood}</span> out of 10`);
+  const note = day.note ? esc(day.note) : '<span class="muted">No note written for this day.</span>';
+  $('sheetBody').innerHTML = `<h2>${longDate(k)}</h2><p class="muted" style="margin:0"><span class="num">${count}</span> of <span class="num">${state.habits.length}</span> habits done${bits.length ? ', ' + bits.join(', ') : ''}</p><ul class="list">${list}</ul><div class="notebox">${note}</div><div class="row"><button class="ghost" data-close>Close</button><button data-edit="${k}">Edit this day</button></div>`;
+  hideTip();
+  $('shade').classList.add('open');
+}
+
+function closeDay() { $('shade').classList.remove('open'); }
+
+$('wall').onclick = e => {
+  const cell = e.target.closest('button');
+  if (cell) openDay(cell.dataset.key);
+};
+
+$('wall').onmouseover = e => {
+  const cell = e.target.closest('button');
+  if (!cell) { hideTip(); return; }
+  const k = cell.dataset.key;
+  const day = state.days[k] || emptyDay;
+  const note = day.note ? esc(day.note.length > 90 ? day.note.slice(0, 90) + '...' : day.note) : 'No note';
+  tip.innerHTML = `<b>${longDate(k)}</b>${Math.round(percent(k) * 100)}% done<br>${note}`;
+  const box = cell.getBoundingClientRect();
+  tip.style.left = Math.max(8, Math.min(box.left, window.innerWidth - 270)) + 'px';
+  tip.style.top = (box.bottom + 10) + 'px';
+  tip.classList.add('show');
+};
+$('wall').onmouseleave = hideTip;
+
+$('shade').onclick = e => {
+  const edit = e.target.closest('[data-edit]');
+  if (edit) {
+    picked = edit.dataset.edit;
+    drawHabits();
+    closeDay();
+    $('dayTitle').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+  if (e.target === $('shade') || e.target.closest('[data-close]')) closeDay();
+};
+document.onkeydown = e => { if (e.key === 'Escape') { closeDay(); closeShare(); } };
+
 $('dateLine').textContent = new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' });
 $('pickedDate').max = picked;
 window.matchMedia('(min-width:900px)').onchange = drawStats;
+drawWhy();
+$('quote').textContent = todaysQuote();
+drawCountdown();
 drawHabits();
 drawManage();
 drawStats();
